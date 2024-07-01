@@ -36,8 +36,8 @@ const userRegister = async (req, res) => {
             })
         }
 
-        const generateNanoId = customAlphabet('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ', 9)
-        const generateMemberId = "V" + generateNanoId()
+        const generateNanoId = customAlphabet('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ', 7)
+        const generateMemberId = "VIK" + generateNanoId()
         let uniqueMemberId;
         do {
             uniqueMemberId = generateMemberId;
