@@ -1,6 +1,7 @@
 const User = require('../models/userModel')
 const Blacklist = require("../models/blacklist")
 const bcrypt = require('bcryptjs')
+const { customAlphabet } = require('nanoid')
 
 const { validationResult } = require('express-validator')
 const mailer = require('../helpers/mailer')
@@ -35,6 +36,15 @@ const userRegister = async (req, res) => {
             })
         }
 
+        const generateNanoId = customAlphabet('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ', 9)
+        const generateMemberId = "V" + generateNanoId()
+        let uniqueMemberId;
+        do {
+            uniqueMemberId = generateMemberId;
+            memberIdExists = await User.findOne({ memberId: uniqueMemberId });
+        } while (memberIdExists);
+
+
         const hashpassword = await bcrypt.hash(password, 10)
 
         const user = new User({
@@ -43,7 +53,8 @@ const userRegister = async (req, res) => {
             password: hashpassword,
             dob,
             mobile,
-            language
+            language,
+            memberId: uniqueMemberId
         })
 
         const userData = await user.save()
@@ -171,7 +182,7 @@ const forgotPassword = async (req, res) => {
         }
 
         const randomString = randomstring.generate()
-        const msg = '<p>Hello, ' + userData.name + ', Please click <a href = "http://127.0.0.1:3000/reset-password?token=' + randomString + '">here </a>to reset your password. </p>'
+        const msg = '<p>Hello, ' + userData.name + ', Please click <a href = "http://127.0.0.1:3000/reset-password?token=' + randomString + '">here</a> to reset your password. </p>'
 
         await PasswordReset.deleteMany({ user_id: userData._id })
 

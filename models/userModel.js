@@ -31,6 +31,10 @@ const userSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
+    memberId: {
+        type: String,
+        required: true
+    }
 })
 
 
