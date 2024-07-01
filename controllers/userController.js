@@ -328,7 +328,6 @@ const loginUser = async (req, res) => {
         return res.status(200).json({
             success: true,
             msg: "Logged in successfully",
-            user: userData,
             accessToken: accessToken,
             refreshToken: refreshToken,
             tokenType: 'Bearer'
